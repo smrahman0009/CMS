@@ -30,3 +30,5 @@ Route::resource('categories', 'CategoriesController');
 Route::resource('post', 'PostController');
 
 Route::get('trashed-post', 'PostController@trashed')->name('trashed-post');
+
+Route::post('restore-post/{post_id}', 'PostController@restore')->name('restore-post');

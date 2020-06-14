@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+
 
 class PostController extends Controller
 {
@@ -38,6 +39,7 @@ class PostController extends Controller
     public function store(CreatePostRequest $request)
     {
         $image = $request->image->store('posts');
+    
         // dd($image);
         // exit;
         Post::create(
@@ -52,6 +54,20 @@ class PostController extends Controller
         session()->flash('success','Posts created successfully');
 
         return redirect(route('post.index'));
+    }
+
+    /**
+     * Restore a trashed posts instorage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($post_id)
+    {
+        Post::withTrashed()->find($post_id)->restore();
+        session()->flash('success','Posts restored successfully');
+
+        return redirect()->back();
     }
 
     /**
@@ -71,9 +87,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('post.create')->with('post',$post);
     }
 
     /**
@@ -83,9 +99,20 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $data = $request->only(['title','content','description','published_at']);
+        if($request->hasFile('image')){
+            $image = $request->image->store('posts');
+            $post->deleteImage();
+            $data['image'] = $image;
+        }
+
+        $post->update($data);
+
+        session()->flash('success','Post updatted successfully');
+
+        return redirect(route('post.index'));
     }
 
     /**
@@ -99,7 +126,8 @@ class PostController extends Controller
         $post = Post::withTrashed()->where('id',$id)->firstOrFail();
 
         if($post->trashed())
-        {Storage::delete($post->image);
+        {
+            $post->deleteImage();
             $post->forceDelete();}
         else $post->delete();
 
@@ -115,7 +143,7 @@ class PostController extends Controller
      */
     public function trashed()
     {
-       $trashed = Post::withTrashed()->get();
+       $trashed = Post::onlyTrashed()->get();
 
         return view('post.index')->withposts($trashed);
     }
