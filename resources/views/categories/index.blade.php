@@ -10,7 +10,9 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    Name
+                    <th>Name</th>
+                    <th>Count Posts</th>
+                    <th></th>
                 </thead>
                 <tbody>
                     @foreach($categories as $category)
@@ -18,6 +20,7 @@
                             <td>
                                 {{$category->name}}
                             </td>
+                            <td>{{$category->posts->count()}}</td>
                             <td>
                                 <a href="{{route('categories.edit',$category->id)}}" class="btn btn-info btn-sm">
                                 edit
@@ -26,7 +29,7 @@
                                 delete
                                 </a>
                             </td>
-                        </tr>
+                        </>
                     @endforeach
                 </tbody>
             </table>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Post;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -10,6 +11,10 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('verifyCountCategories')->only(['create','store']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +32,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        return view('post.create')->with('categories',Category::all());
     }
 
     /**
@@ -40,14 +45,15 @@ class PostController extends Controller
     {
         $image = $request->image->store('posts');
     
-        // dd($image);
+        // dd($request->category);
         // exit;
         Post::create(
             ['title' => $request->title,
             'content' => $request->content,
             'description' => $request->description,
             'published_at' => $request->published_at,
-            'image' => $image
+            'image' => $image,
+            'category_id' => $request->category
             ]
         );
        
@@ -89,7 +95,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('post.create')->with('post',$post);
+        return view('post.create')->with('post',$post)->with('categories',Category::all());
     }
 
     /**

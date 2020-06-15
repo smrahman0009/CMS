@@ -74,11 +74,19 @@
         <main class="py-4">
             @auth
             <div class="container">
-                 @if(Session::has('success'))
+                @if(Session::has('success'))
                 <div class="row">
                     <div class="col-md-12">
                         <div class="alert alert-success" role="alert">
                             {{ Session::get('success') }}
+                        </div>
+                    </div>
+                </div>
+                @elseif(Session::has('warning'))
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert">
+                            {{ Session::get('warning') }}
                         </div>
                     </div>
                 </div>
