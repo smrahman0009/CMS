@@ -6,6 +6,7 @@ use App\Category;
 use App\Post;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Tag;
 use Illuminate\Http\Request;
 
 
@@ -32,7 +33,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create')->with('categories',Category::all());
+        return view('post.create')->with('categories',Category::all())->with('tags',Tag::all());
     }
 
     /**
@@ -44,10 +45,10 @@ class PostController extends Controller
     public function store(CreatePostRequest $request)
     {
         $image = $request->image->store('posts');
-    
-        // dd($request->category);
+        // echo "Hello";
         // exit;
-        Post::create(
+        
+        $post = Post::create(
             ['title' => $request->title,
             'content' => $request->content,
             'description' => $request->description,
@@ -56,7 +57,13 @@ class PostController extends Controller
             'category_id' => $request->category
             ]
         );
-       
+        
+        if($request->tags){
+            $post->tags()->attach($request->tags);
+        }
+        
+        // dd($request->tags);
+        // exit;
         session()->flash('success','Posts created successfully');
 
         return redirect(route('post.index'));
@@ -95,7 +102,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('post.create')->with('post',$post)->with('categories',Category::all());
+        return view('post.create')->with('post',$post)->with('categories',Category::all())->with('tags',Tag::all());
     }
 
     /**
