@@ -37,7 +37,7 @@
             @endif
             <div class="form-group">
                 <label for="category">Category</label>
-                <select name="category" id="category" class="form-control">
+                <select name="category" id="category" class="form-control ">
                     @foreach($categories as $category)
                         <option value="{{$category->id}}"
                            @if(isset($post))
@@ -53,7 +53,7 @@
             @if($tags->count())
             <div class="form-group">
                 <label for="tags">Tags</label>
-                <select name="tags[]" id="tags" class="form-control" multiple>
+                <select name="tags[]" id="tags" class="form-control tags-select" multiple>
                 @foreach($tags as $tag)
                     <option value="{{$tag->id}}">
                         {{$tag->name}}
@@ -79,10 +79,15 @@
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.3/trix.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
         flatpickr("#published_at", {
             enableTime: true,
             dateFormat: "Y-m-d H:i"
+        });
+
+        $(document).ready(function() {
+            $('.tags-select').select2();
         });
     </script>
 @endsection
@@ -90,4 +95,5 @@
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.3/trix.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
