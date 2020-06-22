@@ -123,6 +123,10 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if($request->tags){
+            $post->tags()->sunc($request->tags);
+        }
+
         session()->flash('success','Post updatted successfully');
 
         return redirect(route('post.index'));

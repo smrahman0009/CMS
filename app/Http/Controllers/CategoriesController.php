@@ -93,6 +93,11 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
+        $containing_posts = $category->posts->count(); 
+        if($containing_posts > 0){
+            session()->flash('warning',$containing_posts . " posts contain this category. So this category can not be deleted.");
+            return redirect()->back();
+        }
         $category->delete($category->id);
         return redirect(route('categories.index'));
     }

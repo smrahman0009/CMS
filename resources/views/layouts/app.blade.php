@@ -93,6 +93,13 @@
                 @endif
                 <div class="row">
                     <div class="col-md-4">
+                    @if(auth()->user()->isAdmin())
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{{route('user-list')}}">User</a>
+                            </li>
+                        </ul>
+                    @endif
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <a href="{{route('post.index')}}">Posts</a>
