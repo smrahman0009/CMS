@@ -19,18 +19,17 @@
                 @foreach($users as $user)
                     <tr>
                         <td>
-                            <p>Image</p>
+                            <img src="{{Gravatar::src($user->email)}}" alt="">
                         </td>
                         <td>
                             {{$user->name}}
                         </td>
                         <td>{{$user->email}}</td>
                         <td>
-                            <form action="" method="POST">
+                            <form action="{{route('user.change-type',$user->id)}}" method="POST">
                                 @csrf 
-                                @method("DELETE")
                                 <button type="submit" class="btn btn-success">
-                                Make {{$user->role == 'admin' ? ' Normal':' Admin'}}
+                                Make {{$user->role == 'admin' ? ' Writer':' Admin'}}
                                 </button>
                             </form>
                         </td>

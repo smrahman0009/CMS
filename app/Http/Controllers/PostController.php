@@ -145,7 +145,8 @@ class PostController extends Controller
         if($post->trashed())
         {
             $post->deleteImage();
-            $post->forceDelete();}
+            $post->forceDelete();
+        }
         else $post->delete();
 
         session()->flash('success','Posts deleted successfully');

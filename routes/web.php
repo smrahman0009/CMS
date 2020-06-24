@@ -37,8 +37,13 @@ Route::middleware(['auth'])->group(function(){
     Route::get('trashed-post', 'PostController@trashed')->name('trashed-post');
 
     Route::post('restore-post/{post_id}', 'PostController@restore')->name('restore-post');
+
+    
 });
 
 Route::middleware(['auth','admin'])->group(function(){
     Route::get('user','UserController@index')->name('user-list');
+    Route::get('user/edit-profile','UserController@edit')->name('user.profile-edit');
+    Route::put('user/update-profile','UserController@update')->name('user.profile-update');
+    Route::post('user/{user_id}/change-type', 'UserController@changeType')->name('user.change-type');
 });
