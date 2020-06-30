@@ -32,4 +32,8 @@ class Post extends Model
 
         return in_array($tagId,$this->tags->pluck('id')->toArray());
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

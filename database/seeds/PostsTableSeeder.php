@@ -3,7 +3,9 @@
 use App\Category;
 use App\Post;
 use App\Tag;
+use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class PostsTableSeeder extends Seeder
 {
@@ -38,6 +40,21 @@ class PostsTableSeeder extends Seeder
             'name' => "Marketing"
         ]);
 
+        $user1 = User::create([
+            'name' => 'John Doe',
+            'email' => 'john@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'writer'
+        ]);
+
+        $user2 = User::create([
+            'name' => 'Jehn Doe',
+            'email' => 'jehn@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'writer'
+        ]);
+
+
         $post1 = Post::create([
             'title' => 'We relocated our office to a new designed garage',
             'content' => "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
@@ -45,7 +62,8 @@ class PostsTableSeeder extends Seeder
 
             ",
             'category_id' => $category1->id,
-            'image' => 'posts/6.jpg'
+            'image' => 'posts/6.jpg',
+            'user_id' => $user1->id,
         ]);
 
         $post2 = Post::create([
@@ -55,7 +73,8 @@ class PostsTableSeeder extends Seeder
 
             ",
             'category_id' => $category2->id,
-            'image' => 'posts/7.jpg'
+            'image' => 'posts/7.jpg',
+            'user_id' => $user1->id,
         ]);
 
         $post3 = Post::create([
@@ -65,7 +84,8 @@ class PostsTableSeeder extends Seeder
 
             ",
             'category_id' => $category3->id,
-            'image' => 'posts/8.jpg'
+            'image' => 'posts/8.jpg',
+            'user_id' => $user1->id,
         ]);
 
         $post4 = Post::create([
@@ -75,7 +95,8 @@ class PostsTableSeeder extends Seeder
 
             ",
             'category_id' => $category4->id,
-            'image' => 'posts/9.jpg'
+            'image' => 'posts/9.jpg',
+            'user_id' => $user2->id,
         ]);
 
         $post5 = Post::create([
@@ -85,7 +106,8 @@ class PostsTableSeeder extends Seeder
 
             ",
             'category_id' => $category5->id,
-            'image' => 'posts/10.jpg'
+            'image' => 'posts/10.jpg',
+            'user_id' => $user2->id,
         ]);
 
         $post6 = Post::create([
@@ -95,7 +117,8 @@ class PostsTableSeeder extends Seeder
 
             ",
             'category_id' => $category6->id,
-            'image' => 'posts/12.jpg'
+            'image' => 'posts/12.jpg',
+            'user_id' => $user2->id,
         ]);
 
         $tag1 = Tag::create([
